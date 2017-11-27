@@ -19,6 +19,7 @@
 #include <stdio.h>   
 #include <sys/time.h>
 #include <stdlib.h>
+#include <unistd.h>
 # define KEY_UP 126
 # define KEY_DOWN 125
 # define KEY_RIGHT 124
@@ -36,7 +37,9 @@
 # define WIN_HEIGHT 720
 # define TEX_WIDTH 64
 # define TEX_HEIGHT 64
+# define NUM_TEXTURES 8
 
+char *textures_images[0];
 
 typedef struct	s_v2
 {
@@ -77,12 +80,13 @@ typedef struct		s_app
 	void			*mlx;
 	void			*win;
 	t_image			image;
+	t_image			textures;
 	t_v2 			pos;
 	t_v2 			dir;
 	t_v2 			plane;
 	t_clock			clock;
 	int				key_pressed[4];
-	int				*texture[8];
+	int				texture[NUM_TEXTURES][TEX_WIDTH * TEX_HEIGHT];
 }					t_app;
 
 int main_draw_loop(t_app *app);

@@ -1,16 +1,16 @@
 NAME = wolf3d
 
 C_DIR = src
-C_DIRS = $(shell find $(C_DIR) -type d -follow -print | grep -v '/tests_')
-C_FILES = $(shell find $(C_DIRS) -type f -follow -print | grep "\.c" | grep -v '.swp')
+C_FILES = src/clock.c  src/keyboard.c src/main.c
+
 
 O_DIR =	.tmp/obj
 O_DIRS = $(C_DIRS:$(C_DIR)%=$(O_DIR)%)
 O_FILES = $(C_FILES:$(C_DIR)%.c=$(O_DIR)%.o)
 
-FLAGS = -Wall -Wextra -Werror
-INCLUDES = -I ./includes -I ./libft/includes 
-LIB = -L/usr/local/lib -lmlx -framework OpenGL -framework AppKit
+FLAGS = -Wall -Wextra -Werror -fsanitize=address
+INCLUDES = -I ./includes -I ./libft/includes -I./minilibx_macos
+LIB = -L./minilibx_macos -L/usr/local/lib -lmlx -framework OpenGL -framework AppKit
 
 CC = gcc
 

@@ -34,7 +34,7 @@ int worldMap[mapWidth][mapHeight]=
 	{4,0,0,0,0,0,0,0,0,0,0,0,6,2,0,0,5,0,0,2,0,0,0,2},
 	{4,0,0,0,0,0,0,0,0,4,6,0,6,2,0,0,0,0,0,2,2,0,2,2},
 	{4,0,6,0,6,0,0,0,0,4,6,0,0,0,0,0,5,0,0,0,0,0,0,2},
-	{4,0,0,5,0,0,0,0,0,4,6,0,6,2,0,0,0,0,0,2,2,0,2,2},
+	{4,0,0,5,0,0,0,0,0,4,1,0,1,2,0,0,0,0,0,2,2,0,2,2},
 	{4,0,6,0,6,0,0,0,0,4,6,0,6,2,0,0,5,0,0,2,0,0,0,2},
 	{4,0,0,0,0,0,0,0,0,4,6,0,6,2,0,0,0,0,0,2,0,0,0,2},
 	{4,4,4,4,4,4,4,4,4,4,1,1,1,2,2,2,2,2,2,3,3,3,3,3}
@@ -42,7 +42,7 @@ int worldMap[mapWidth][mapHeight]=
 
 int update(t_app *app)
 {
-	double moveSpeed = 0.2f;
+	double moveSpeed = 0.1f;
 	double rotSpeed = 0.05f;
 
 	if (app->key_pressed[UP])
@@ -210,7 +210,17 @@ int main_draw_loop(t_app *app)
 		{
 			int d = y * 256 - WIN_HEIGHT * 128 + lineHeight * 128;
 			int texY = ((d * TEX_HEIGHT) / lineHeight) / 256;
-			int color = app->texture[texNum][TEX_HEIGHT * texY + texX];
+			if (texNum < 0 || texNum > 7) {
+				printf("texnum error: %d\n", texNum);
+			}
+			if (texY < 0 || texY > TEX_HEIGHT) {
+				printf("texY error: %d\n", texY);
+				printf("%d %d\n", d, lineHeight);
+			}
+			if (texX < 0 || texX > TEX_HEIGHT) {
+				printf("texX error: %d\n", texX);
+			}
+			int color = app->texture[texNum][TEX_WIDTH * texY + texX];
 			if (side == 1)
 				color = (color >> 1) & 0x7F7F7F;
 			*(app->image.data + (x + WIN_WIDTH * y)) =
@@ -223,6 +233,7 @@ int main_draw_loop(t_app *app)
 		}
 	}
 	mlx_put_image_to_window(app->mlx, app->win, app->image.ptr, 0, 0);
+	mlx_put_image_to_window(app->mlx, app->win, app->textures.ptr, 0, 0);
 	return (0);
 }
 
@@ -240,45 +251,41 @@ int		loop_hook(t_app *app)
 	return (0);
 }
 
-void init_texture(t_app *app)
-{
-	for (int i = 0; i < 8; i++)
-		app->texture[i] = malloc(sizeof(int) * TEX_WIDTH * TEX_HEIGHT);
-}
-
 int		main(void)
 {
 	t_app		app;
 
 	memset(&app, 0, sizeof(t_app));
 
-	init_texture(&app);
-
 	clock_init(&(app.clock));
 	app.pos = (t_v2) { .x = 22, .y = 11.5 };
 	app.dir = (t_v2) { .x = -1, .y = 0 };
 	app.plane = (t_v2) { .x = 0, .y = 0.66 };
 
-	for(int x = 0; x < TEX_WIDTH; x++)
-		for(int y = 0; y < TEX_HEIGHT; y++)
-		{
-			int xorcolor = (x * 256 / TEX_WIDTH) ^ (y * 256 / TEX_HEIGHT);
-			//int xcolor = x * 256 / TEX_WIDTH;
-			int ycolor = y * 256 / TEX_HEIGHT;
-			int xycolor = y * 128 / TEX_HEIGHT + x * 128 / TEX_WIDTH;
-			app.texture[0][TEX_WIDTH * y + x] = 65536 * 254 * (x != y && x != TEX_WIDTH - y); //flat red texture with black cross
-			app.texture[1][TEX_WIDTH * y + x] = xycolor + 256 * xycolor + 65536 * xycolor; //sloped greyscale
-			app.texture[2][TEX_WIDTH * y + x] = 256 * xycolor + 65536 * xycolor; //sloped yellow gradient
-			app.texture[3][TEX_WIDTH * y + x] = xorcolor + 256 * xorcolor + 65536 * xorcolor; //xor greyscale
-			app.texture[4][TEX_WIDTH * y + x] = 256 * xorcolor; //xor green
-			app.texture[5][TEX_WIDTH * y + x] = 65536 * 192 * (x % 16 && y % 16); //red bricks
-			app.texture[6][TEX_WIDTH * y + x] = 65536 * ycolor; //red gradient
-			app.texture[7][TEX_WIDTH * y + x] = 128 + 256 * 128 + 65536 * 128; //flat grey texture
-		}
-
-
 	app.mlx = mlx_init();
 	app.win = mlx_new_window(app.mlx, WIN_WIDTH, WIN_HEIGHT, "Wolf3d");
+
+
+	int a, b;
+	app.textures.ptr = (int *)mlx_xpm_file_to_image(app.mlx, "./textures/wolftextures.xpm", &a, &b);
+	printf("%d %d %p\n", a, b, app.textures.ptr);
+	app.textures.data = (int *)mlx_get_data_addr(app.textures.ptr, app.textures.infos, app.textures.infos + 1, app.textures.infos + 2);
+
+	/* int *textures = app.textures.data; */
+
+	for (int i = 0; i < 8; i++) {
+		for(int x = 0; x < TEX_WIDTH; x++)
+			for(int y = 0; y < TEX_HEIGHT; y++)
+			{
+
+				app.texture[i][x + TEX_WIDTH * y] = app.textures.data[x + a * y + (i * TEX_WIDTH)];
+				/* printf("accessing %d %d of texture and %d %d of file\n", x, y, x + (i * TEX_WIDTH), y); */
+				/* printf("index %d and %d\n", x + TEX_WIDTH * y, x + (i * TEX_WIDTH) + TEX_WIDTH * y); */
+				/* app.texture[i][x + TEX_WIDTH * y] = textures[x + (i * TEX_WIDTH) + TEX_WIDTH * y]; */
+			}
+	}
+
+
 	mlx_expose_hook(app.win, main_draw_loop, &app);
 	app.image.ptr = mlx_new_image(app.mlx, WIN_WIDTH, WIN_HEIGHT);
 	app.image.data = (int *)mlx_get_data_addr(app.image.ptr, app.image.infos,
