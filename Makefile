@@ -1,7 +1,7 @@
 NAME = wolf3d
 
 C_DIR = src
-C_FILES = src/clock.c  src/keyboard.c src/main.c
+C_FILES = src/clock.c  src/keyboard.c src/main.c src/parse_map_file.c
 
 
 O_DIR =	.tmp/obj
@@ -10,7 +10,7 @@ O_FILES = $(C_FILES:$(C_DIR)%.c=$(O_DIR)%.o)
 
 FLAGS = -Wall -Wextra -Werror -fsanitize=address
 INCLUDES = -I ./includes -I ./libft/includes -I./minilibx_macos
-LIB = -L./minilibx_macos -L/usr/local/lib -lmlx -framework OpenGL -framework AppKit
+LIB = -L./minilibx_macos -L/usr/local/lib -lmlx -framework OpenGL -framework AppKit -L./libft -lft
 
 CC = gcc
 

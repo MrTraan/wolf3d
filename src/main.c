@@ -6,57 +6,34 @@
 /*   By: ngrasset <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/11/18 20:20:11 by ngrasset          #+#    #+#             */
-/*   Updated: 2017/11/19 16:51:21 by ngrasset         ###   ########.fr       */
+/*   Updated: 2017/12/17 19:19:23 by ngrasset         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <wolf.h>
 
-int worldMap[mapWidth][mapHeight]=
-{
-	{4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,7,7,7,7,7,7,7,7},
-	{4,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,7,0,0,0,0,0,0,7},
-	{4,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,7},
-	{4,0,2,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,7},
-	{4,0,3,0,0,0,0,0,0,0,0,0,0,0,0,0,7,0,0,0,0,0,0,7},
-	{4,0,4,0,0,0,0,5,5,5,5,5,5,5,5,5,7,7,0,7,7,7,7,7},
-	{4,0,5,0,0,0,0,5,0,5,0,5,0,5,0,5,7,0,0,0,7,7,7,1},
-	{4,0,6,0,0,0,0,5,0,0,0,0,0,0,0,5,7,0,0,0,0,0,0,8},
-	{4,0,7,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,7,7,7,1},
-	{4,0,8,0,0,0,0,5,0,0,0,0,0,0,0,5,7,0,0,0,0,0,0,8},
-	{4,0,0,0,0,0,0,5,0,0,0,0,0,0,0,5,7,0,0,0,7,7,7,1},
-	{4,0,0,0,0,0,0,5,5,5,5,0,5,5,5,5,7,7,7,7,7,7,7,1},
-	{6,6,6,6,6,6,6,6,6,6,6,0,6,6,6,6,6,6,6,6,6,6,6,6},
-	{8,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,4},
-	{6,6,6,6,6,6,0,6,6,6,6,0,6,6,6,6,6,6,6,6,6,6,6,6},
-	{4,4,4,4,4,4,0,4,4,4,6,0,6,2,2,2,2,2,2,2,3,3,3,3},
-	{4,0,0,0,0,0,0,0,0,4,6,0,6,2,0,0,0,0,0,2,0,0,0,2},
-	{4,0,0,0,0,0,0,0,0,0,0,0,6,2,0,0,5,0,0,2,0,0,0,2},
-	{4,0,0,0,0,0,0,0,0,4,6,0,6,2,0,0,0,0,0,2,2,0,2,2},
-	{4,0,6,0,6,0,0,0,0,4,6,0,0,0,0,0,5,0,0,0,0,0,0,2},
-	{4,0,0,5,0,0,0,0,0,4,1,0,1,2,0,0,0,0,0,2,2,0,2,2},
-	{4,0,6,0,6,0,0,0,0,4,6,0,6,2,0,0,5,0,0,2,0,0,0,2},
-	{4,0,0,0,0,0,0,0,0,4,6,0,6,2,0,0,0,0,0,2,0,0,0,2},
-	{4,4,4,4,4,4,4,4,4,4,1,1,1,2,2,2,2,2,2,3,3,3,3,3}
-};
-
 int update(t_app *app)
 {
 	double moveSpeed = 0.1f;
 	double rotSpeed = 0.05f;
+	t_v2 new_pos;
 
 	if (app->key_pressed[UP])
 	{
-		if (worldMap[(int)(app->pos.x + app->dir.x * moveSpeed)][(int)app->pos.y] == 0)
+		new_pos.x = app->pos.x + app->dir.x * moveSpeed;
+		if (new_pos.x > 0 && new_pos.x < app->map->width && app->map->data[(int)app->pos.y][(int)new_pos.x] == 0)
 			app->pos.x += app->dir.x * moveSpeed;
-		if (worldMap[(int)app->pos.x][(int)(app->pos.y + app->dir.y * moveSpeed)] == 0)
+		new_pos.y = app->pos.y + app->dir.y * moveSpeed;
+		if (new_pos.y > 0 && new_pos.y < app->map->height && app->map->data[(int)new_pos.y][(int)app->pos.x] == 0)
 			app->pos.y += app->dir.y * moveSpeed;
 	}
 	if (app->key_pressed[DOWN])
 	{
-		if (worldMap[(int)(app->pos.x - app->dir.x * moveSpeed)][(int)app->pos.y] == 0)
+		new_pos.x = app->pos.x - app->dir.x * moveSpeed;
+		if (new_pos.x > 0 && new_pos.x < app->map->width && app->map->data[(int)app->pos.y][(int)new_pos.x] == 0)
 			app->pos.x -= app->dir.x * moveSpeed;
-		if (worldMap[(int)app->pos.x][(int)(app->pos.y - app->dir.y * moveSpeed)] == 0)
+		new_pos.y = app->pos.y - app->dir.y * moveSpeed;
+		if (new_pos.y > 0 && new_pos.y < app->map->height && app->map->data[(int)new_pos.y][(int)app->pos.x] == 0)
 			app->pos.y -= app->dir.y * moveSpeed;
 	}
 	if (app->key_pressed[LEFT])
@@ -99,13 +76,13 @@ void clear_image(t_app *app)
 int main_draw_loop(t_app *app)
 {
 	clear_image(app);
-	update(app);
 
 	for (int x = 0; x < WIN_WIDTH; x++)
 	{
 		t_v2 camera = { .x = 2 * x / (double)WIN_WIDTH - 1, .y = 0 };
 		t_v2 rayPos = { .x = app->pos.x, .y = app->pos.y };
-		t_v2 rayDir = { .x = app->dir.x + app->plane.x * camera.x,
+		t_v2 rayDir = {
+			.x = app->dir.x + app->plane.x * camera.x,
 			.y = app->dir.y + app->plane.y * camera.x
 		};
 
@@ -160,8 +137,9 @@ int main_draw_loop(t_app *app)
 				map.y += step.y;
 				side = 1;
 			}
-
-			if (worldMap[map.x][map.y] > 0)
+			if (map.y >= app->map->height || map.y < 0 || map.x >= app->map->width || map.x < 0)
+				hit = 1;
+			else if (app->map->data[map.y][map.x] > 0)
 				hit = 1;
 		}
 
@@ -179,7 +157,12 @@ int main_draw_loop(t_app *app)
 		if (drawEnd >= WIN_HEIGHT)
 			drawEnd = WIN_HEIGHT - 1;
 
-		int texNum = worldMap[map.x][map.y] - 1;
+		int texNum;
+		
+		if (map.y >= app->map->height || map.y < 0 || map.x >= app->map->width || map.x < 0)
+			texNum = 0;
+		else
+			texNum = app->map->data[map.y][map.x] - 1;
 
 		double wallX;
 		if (side == 0) wallX = rayPos.y + perpWallDist * rayDir.y;
@@ -204,22 +187,16 @@ int main_draw_loop(t_app *app)
 		for (int y = 0; y < start; y++)
 		{
 			*(app->image.data + (x + WIN_WIDTH * y)) =
-				(int)mlx_get_color_value(app->mlx, 0x001c49);
+				(int)mlx_get_color_value(app->mlx, 0x0);
 		}
 		for (int y = start; y < end; y++)
 		{
 			int d = y * 256 - WIN_HEIGHT * 128 + lineHeight * 128;
 			int texY = ((d * TEX_HEIGHT) / lineHeight) / 256;
-			if (texNum < 0 || texNum > 7) {
-				printf("texnum error: %d\n", texNum);
-			}
-			if (texY < 0 || texY > TEX_HEIGHT) {
-				printf("texY error: %d\n", texY);
-				printf("%d %d\n", d, lineHeight);
-			}
-			if (texX < 0 || texX > TEX_HEIGHT) {
-				printf("texX error: %d\n", texX);
-			}
+			if (texY < 0 || texY > TEX_HEIGHT)
+				texY = 0;
+			if (texX < 0 || texX > TEX_HEIGHT)
+				texX = 0;
 			int color = app->texture[texNum][TEX_WIDTH * texY + texX];
 			if (side == 1)
 				color = (color >> 1) & 0x7F7F7F;
@@ -241,50 +218,93 @@ int		loop_hook(t_app *app)
 {
 	int		fps;
 
+	update(app);
 	main_draw_loop(app);
 	fps = clock_tick(&(app->clock));
 
-	char buffer[100];
+	char buffer[1024];
 	sprintf(buffer, "%d fps", fps);
-	mlx_string_put(app->mlx, app->win, 12, 12, 0xFFFFFF, buffer);
+	/* mlx_string_put(app->mlx, app->win, 12, 12, 0xFFFFFF, buffer); */
+	/* for (int y = 0; y < app->map->height; y++) */
+	/* { */
+	/* 	for (int x = 0; x < app->map->width; x++) */
+	/* 	{ */
+	/* 		if (x == (int)app->pos.x && y == (int)app->pos.y) */
+	/* 			buffer[x] = 'P'; */
+	/* 		else */
+	/* 			buffer[x] = (char)app->map->data[y][x] + '0'; */
+	/* 	} */
+	/* 	buffer[app->map->width] = '\0'; */
+	/* 	mlx_string_put(app->mlx, app->win, 0, y * 12, 0xFFFFFF, buffer); */
+	/* } */
 
 	return (0);
 }
 
-int		main(void)
+int		first_empty_position(t_app *app)
+{
+	int		x;
+	int		y;
+
+	y = 0;
+	while (y < app->map->height)
+	{
+		x = 0;
+		while (x < app->map->width)
+		{
+			if (app->map->data[y][x] == 0)
+			{
+				printf("lets start at %d %d\n", x, y);
+				app->pos = (t_v2){x + 0.1, y + 0.1};
+				return (0);
+			}
+			x++;
+		}
+		y++;
+	}
+	ft_putstr_fd("Could not find an empty starting position\n", 2);
+	return (1);
+}
+
+int		main(int ac, char **av)
 {
 	t_app		app;
 
 	memset(&app, 0, sizeof(t_app));
 
 	clock_init(&(app.clock));
-	app.pos = (t_v2) { .x = 22, .y = 11.5 };
-	app.dir = (t_v2) { .x = -1, .y = 0 };
-	app.plane = (t_v2) { .x = 0, .y = 0.66 };
+	app.dir = (t_v2) { .x = 1, .y = 0 };
+	app.plane = (t_v2) { .x = 0, .y = -0.66 };
 
 	app.mlx = mlx_init();
 	app.win = mlx_new_window(app.mlx, WIN_WIDTH, WIN_HEIGHT, "Wolf3d");
 
 
 	int a, b;
-	app.textures.ptr = (int *)mlx_xpm_file_to_image(app.mlx, "./textures/wolftextures.xpm", &a, &b);
-	printf("%d %d %p\n", a, b, app.textures.ptr);
+	if (ac == 2 && strcmp(av[1], "minecraft") == 0)
+		app.textures.ptr = (int *)mlx_xpm_file_to_image(app.mlx, "./textures/minecraft.xpm", &a, &b);
+	else
+		app.textures.ptr = (int *)mlx_xpm_file_to_image(app.mlx, "./textures/wolftextures.xpm", &a, &b);
+	if (a != TEX_WIDTH * NUM_TEXTURES || b != TEX_HEIGHT)
+	{
+		printf("Invalid texture file\n");
+		return (1);
+	}
 	app.textures.data = (int *)mlx_get_data_addr(app.textures.ptr, app.textures.infos, app.textures.infos + 1, app.textures.infos + 2);
 
-	/* int *textures = app.textures.data; */
-
-	for (int i = 0; i < 8; i++) {
+	for (int i = 0; i < NUM_TEXTURES; i++)
 		for(int x = 0; x < TEX_WIDTH; x++)
 			for(int y = 0; y < TEX_HEIGHT; y++)
-			{
-
 				app.texture[i][x + TEX_WIDTH * y] = app.textures.data[x + a * y + (i * TEX_WIDTH)];
-				/* printf("accessing %d %d of texture and %d %d of file\n", x, y, x + (i * TEX_WIDTH), y); */
-				/* printf("index %d and %d\n", x + TEX_WIDTH * y, x + (i * TEX_WIDTH) + TEX_WIDTH * y); */
-				/* app.texture[i][x + TEX_WIDTH * y] = textures[x + (i * TEX_WIDTH) + TEX_WIDTH * y]; */
-			}
-	}
 
+	app.map = parse_map_file("./test.map");
+	if (!app.map)
+	{
+		ft_putstr_fd("Error parsing map file\n", 2);
+		return (1);
+	}
+	if (first_empty_position(&app) != 0)
+		return (1);
 
 	mlx_expose_hook(app.win, main_draw_loop, &app);
 	app.image.ptr = mlx_new_image(app.mlx, WIN_WIDTH, WIN_HEIGHT);

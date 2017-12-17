@@ -6,7 +6,7 @@
 /*   By: ngrasset <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/11/18 20:18:52 by ngrasset          #+#    #+#             */
-/*   Updated: 2017/11/19 16:00:55 by ngrasset         ###   ########.fr       */
+/*   Updated: 2017/12/17 17:48:20 by ngrasset         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,7 @@
 #include <sys/time.h>
 #include <stdlib.h>
 #include <unistd.h>
+#include <libft.h>
 # define KEY_UP 126
 # define KEY_DOWN 125
 # define KEY_RIGHT 124
@@ -31,8 +32,6 @@
 # define KEY_PRESS_MASK (1L<<0)
 # define KEY_RELEASE_MASK (1L<<1)
 
-# define mapWidth 24
-# define mapHeight 24
 # define WIN_WIDTH 1200
 # define WIN_HEIGHT 720
 # define TEX_WIDTH 64
@@ -75,6 +74,13 @@ typedef enum		e_keys
 	RIGHT
 }					t_keys;
 
+typedef struct 		s_map
+{
+	int				width;
+	int				height;
+	int				**data;
+}					t_map;
+
 typedef struct		s_app
 {
 	void			*mlx;
@@ -87,6 +93,7 @@ typedef struct		s_app
 	t_clock			clock;
 	int				key_pressed[4];
 	int				texture[NUM_TEXTURES][TEX_WIDTH * TEX_HEIGHT];
+	t_map			*map;
 }					t_app;
 
 int main_draw_loop(t_app *app);
@@ -98,4 +105,5 @@ int		clock_tick(t_clock *clock);
 int					key_press_event(int keycode, t_app *app);
 int					key_release_event(int keycode, t_app *app);
 
+t_map 				*parse_map_file(char *path);
 #endif
