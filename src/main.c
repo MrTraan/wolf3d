@@ -6,7 +6,7 @@
 /*   By: ngrasset <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/11/18 20:20:11 by ngrasset          #+#    #+#             */
-/*   Updated: 2017/12/17 19:19:23 by ngrasset         ###   ########.fr       */
+/*   Updated: 2018/02/10 16:27:57 by ngrasset         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,53 +14,51 @@
 
 int update(t_app *app)
 {
-	double moveSpeed = 0.1f;
-	double rotSpeed = 0.05f;
 	t_v2 new_pos;
 
 	if (app->key_pressed[UP])
 	{
-		new_pos.x = app->pos.x + app->dir.x * moveSpeed;
+		new_pos.x = app->pos.x + app->dir.x * MOVE_SPEED;
 		if (new_pos.x > 0 && new_pos.x < app->map->width && app->map->data[(int)app->pos.y][(int)new_pos.x] == 0)
-			app->pos.x += app->dir.x * moveSpeed;
-		new_pos.y = app->pos.y + app->dir.y * moveSpeed;
+			app->pos.x += app->dir.x * MOVE_SPEED;
+		new_pos.y = app->pos.y + app->dir.y * MOVE_SPEED;
 		if (new_pos.y > 0 && new_pos.y < app->map->height && app->map->data[(int)new_pos.y][(int)app->pos.x] == 0)
-			app->pos.y += app->dir.y * moveSpeed;
+			app->pos.y += app->dir.y * MOVE_SPEED;
 	}
 	if (app->key_pressed[DOWN])
 	{
-		new_pos.x = app->pos.x - app->dir.x * moveSpeed;
+		new_pos.x = app->pos.x - app->dir.x * MOVE_SPEED;
 		if (new_pos.x > 0 && new_pos.x < app->map->width && app->map->data[(int)app->pos.y][(int)new_pos.x] == 0)
-			app->pos.x -= app->dir.x * moveSpeed;
-		new_pos.y = app->pos.y - app->dir.y * moveSpeed;
+			app->pos.x -= app->dir.x * MOVE_SPEED;
+		new_pos.y = app->pos.y - app->dir.y * MOVE_SPEED;
 		if (new_pos.y > 0 && new_pos.y < app->map->height && app->map->data[(int)new_pos.y][(int)app->pos.x] == 0)
-			app->pos.y -= app->dir.y * moveSpeed;
+			app->pos.y -= app->dir.y * MOVE_SPEED;
 	}
 	if (app->key_pressed[LEFT])
 	{
 		double oldDirX = app->dir.x;
-		app->dir.x = app->dir.x * cos(rotSpeed) -
-			app->dir.y * sin(rotSpeed);
-		app->dir.y = oldDirX * sin(rotSpeed) +
-			app->dir.y * cos(rotSpeed);
+		app->dir.x = app->dir.x * cos(ROT_SPEED) -
+			app->dir.y * sin(ROT_SPEED);
+		app->dir.y = oldDirX * sin(ROT_SPEED) +
+			app->dir.y * cos(ROT_SPEED);
 		double oldPlaneX = app->plane.x;
-		app->plane.x = app->plane.x * cos(rotSpeed) -
-			app->plane.y * sin(rotSpeed);
-		app->plane.y = oldPlaneX * sin(rotSpeed) +
-			app->plane.y * cos(rotSpeed);
+		app->plane.x = app->plane.x * cos(ROT_SPEED) -
+			app->plane.y * sin(ROT_SPEED);
+		app->plane.y = oldPlaneX * sin(ROT_SPEED) +
+			app->plane.y * cos(ROT_SPEED);
 	}
 	if (app->key_pressed[RIGHT])
 	{
 		double oldDirX = app->dir.x;
-		app->dir.x = app->dir.x * cos(-rotSpeed) -
-			app->dir.y * sin(-rotSpeed);
-		app->dir.y = oldDirX * sin(-rotSpeed) +
-			app->dir.y * cos(-rotSpeed);
+		app->dir.x = app->dir.x * cos(-ROT_SPEED) -
+			app->dir.y * sin(-ROT_SPEED);
+		app->dir.y = oldDirX * sin(-ROT_SPEED) +
+			app->dir.y * cos(-ROT_SPEED);
 		double oldPlaneX = app->plane.x;
-		app->plane.x = app->plane.x * cos(-rotSpeed) -
-			app->plane.y * sin(-rotSpeed);
-		app->plane.y = oldPlaneX * sin(-rotSpeed) +
-			app->plane.y * cos(-rotSpeed);
+		app->plane.x = app->plane.x * cos(-ROT_SPEED) -
+			app->plane.y * sin(-ROT_SPEED);
+		app->plane.y = oldPlaneX * sin(-ROT_SPEED) +
+			app->plane.y * cos(-ROT_SPEED);
 	}
 	return (0);
 }
@@ -68,8 +66,6 @@ int update(t_app *app)
 void clear_image(t_app *app)
 {
 	memset(app->image.data, 0, sizeof(int) * WIN_WIDTH * WIN_HEIGHT);
-	/* for (int x = 0; x < WIN_WIDTH; x++) */
-	/* 	drawVerLine(app, x, 0, WIN_HEIGHT - 1, 0); */ 
 }
 
 
@@ -217,102 +213,25 @@ int main_draw_loop(t_app *app)
 int		loop_hook(t_app *app)
 {
 	int		fps;
+	char	buffer[1024];
 
 	update(app);
 	main_draw_loop(app);
 	fps = clock_tick(&(app->clock));
-
-	char buffer[1024];
 	sprintf(buffer, "%d fps", fps);
-	/* mlx_string_put(app->mlx, app->win, 12, 12, 0xFFFFFF, buffer); */
-	/* for (int y = 0; y < app->map->height; y++) */
-	/* { */
-	/* 	for (int x = 0; x < app->map->width; x++) */
-	/* 	{ */
-	/* 		if (x == (int)app->pos.x && y == (int)app->pos.y) */
-	/* 			buffer[x] = 'P'; */
-	/* 		else */
-	/* 			buffer[x] = (char)app->map->data[y][x] + '0'; */
-	/* 	} */
-	/* 	buffer[app->map->width] = '\0'; */
-	/* 	mlx_string_put(app->mlx, app->win, 0, y * 12, 0xFFFFFF, buffer); */
-	/* } */
-
+	mlx_string_put(app->mlx, app->win, 12, 12, 0xFFFFFF, buffer);
 	return (0);
-}
-
-int		first_empty_position(t_app *app)
-{
-	int		x;
-	int		y;
-
-	y = 0;
-	while (y < app->map->height)
-	{
-		x = 0;
-		while (x < app->map->width)
-		{
-			if (app->map->data[y][x] == 0)
-			{
-				printf("lets start at %d %d\n", x, y);
-				app->pos = (t_v2){x + 0.1, y + 0.1};
-				return (0);
-			}
-			x++;
-		}
-		y++;
-	}
-	ft_putstr_fd("Could not find an empty starting position\n", 2);
-	return (1);
 }
 
 int		main(int ac, char **av)
 {
 	t_app		app;
 
-	memset(&app, 0, sizeof(t_app));
-
-	clock_init(&(app.clock));
-	app.dir = (t_v2) { .x = 1, .y = 0 };
-	app.plane = (t_v2) { .x = 0, .y = -0.66 };
-
-	app.mlx = mlx_init();
-	app.win = mlx_new_window(app.mlx, WIN_WIDTH, WIN_HEIGHT, "Wolf3d");
-
-
-	int a, b;
-	if (ac == 2 && strcmp(av[1], "minecraft") == 0)
-		app.textures.ptr = (int *)mlx_xpm_file_to_image(app.mlx, "./textures/minecraft.xpm", &a, &b);
-	else
-		app.textures.ptr = (int *)mlx_xpm_file_to_image(app.mlx, "./textures/wolftextures.xpm", &a, &b);
-	if (a != TEX_WIDTH * NUM_TEXTURES || b != TEX_HEIGHT)
+	if (init_app(&app) || parse_arguments(ac, av, &app) || load_textures(&app))
 	{
-		printf("Invalid texture file\n");
+		free_app(&app);
 		return (1);
 	}
-	app.textures.data = (int *)mlx_get_data_addr(app.textures.ptr, app.textures.infos, app.textures.infos + 1, app.textures.infos + 2);
-
-	for (int i = 0; i < NUM_TEXTURES; i++)
-		for(int x = 0; x < TEX_WIDTH; x++)
-			for(int y = 0; y < TEX_HEIGHT; y++)
-				app.texture[i][x + TEX_WIDTH * y] = app.textures.data[x + a * y + (i * TEX_WIDTH)];
-
-	app.map = parse_map_file("./test.map");
-	if (!app.map)
-	{
-		ft_putstr_fd("Error parsing map file\n", 2);
-		return (1);
-	}
-	if (first_empty_position(&app) != 0)
-		return (1);
-
-	mlx_expose_hook(app.win, main_draw_loop, &app);
-	app.image.ptr = mlx_new_image(app.mlx, WIN_WIDTH, WIN_HEIGHT);
-	app.image.data = (int *)mlx_get_data_addr(app.image.ptr, app.image.infos,
-			app.image.infos + 1, app.image.infos + 2);
-	mlx_loop_hook(app.mlx, loop_hook, &app);
-	mlx_hook(app.win, KEY_PRESS, KEY_PRESS_MASK, key_press_event, &app);
-	mlx_hook(app.win, KEY_RELEASE, KEY_RELEASE_MASK, key_release_event, &app);
 	main_draw_loop(&app);
 	mlx_loop(app.mlx);
 	return (0);

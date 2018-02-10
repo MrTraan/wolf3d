@@ -1,7 +1,19 @@
+# **************************************************************************** #
+#                                                                              #
+#                                                         :::      ::::::::    #
+#    Makefile                                           :+:      :+:    :+:    #
+#                                                     +:+ +:+         +:+      #
+#    By: ngrasset <ngrasset@student.42.fr>          +#+  +:+       +#+         #
+#                                                 +#+#+#+#+#+   +#+            #
+#    Created: 2018/02/10 15:53:21 by ngrasset          #+#    #+#              #
+#    Updated: 2018/02/10 15:53:22 by ngrasset         ###   ########.fr        #
+#                                                                              #
+# **************************************************************************** #
+
 NAME = wolf3d
 
 C_DIR = src
-C_FILES = src/clock.c  src/keyboard.c src/main.c src/parse_map_file.c
+C_FILES = src/clock.c  src/keyboard.c src/main.c src/parse_map_file.c src/init.c src/free.c
 
 
 O_DIR =	.tmp/obj

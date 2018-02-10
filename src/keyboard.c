@@ -6,7 +6,7 @@
 /*   By: ngrasset <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/11/19 12:55:45 by ngrasset          #+#    #+#             */
-/*   Updated: 2017/11/19 13:01:50 by ngrasset         ###   ########.fr       */
+/*   Updated: 2018/02/10 16:20:59 by ngrasset         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,10 @@ int			key_press_event(int keycode, t_app *app)
 	if (keycode == KEY_RIGHT)
 		app->key_pressed[RIGHT] = 1;
 	if (keycode == KEY_ESCAPE)
+	{
+		free_app(app);
 		exit(0);
+	}
 	return (0);
 }
 
