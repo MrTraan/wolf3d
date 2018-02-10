@@ -6,7 +6,7 @@
 /*   By: ngrasset <ngrasset@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/10 16:54:51 by ngrasset          #+#    #+#             */
-/*   Updated: 2018/02/10 16:55:41 by ngrasset         ###   ########.fr       */
+/*   Updated: 2018/02/10 17:33:49 by ngrasset         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,6 +41,9 @@
 
 # define MOVE_SPEED 0.1f
 # define ROT_SPEED 0.05f
+
+# define MAP_COORDS(APP, X, Y) ((int)((APP)->map->data[(int)(Y)][(int)(X)]))
+
 
 typedef struct		s_v2
 {
@@ -118,4 +121,6 @@ int					load_textures(t_app *app);
 
 void				free_map_data(t_map *map);
 void				free_app(t_app *app);
+
+void				move_character(t_app *app);
 #endif

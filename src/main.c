@@ -6,7 +6,7 @@
 /*   By: ngrasset <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/11/18 20:20:11 by ngrasset          #+#    #+#             */
-/*   Updated: 2018/02/10 16:27:57 by ngrasset         ###   ########.fr       */
+/*   Updated: 2018/02/10 18:40:40 by ngrasset         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,52 +14,7 @@
 
 int update(t_app *app)
 {
-	t_v2 new_pos;
-
-	if (app->key_pressed[UP])
-	{
-		new_pos.x = app->pos.x + app->dir.x * MOVE_SPEED;
-		if (new_pos.x > 0 && new_pos.x < app->map->width && app->map->data[(int)app->pos.y][(int)new_pos.x] == 0)
-			app->pos.x += app->dir.x * MOVE_SPEED;
-		new_pos.y = app->pos.y + app->dir.y * MOVE_SPEED;
-		if (new_pos.y > 0 && new_pos.y < app->map->height && app->map->data[(int)new_pos.y][(int)app->pos.x] == 0)
-			app->pos.y += app->dir.y * MOVE_SPEED;
-	}
-	if (app->key_pressed[DOWN])
-	{
-		new_pos.x = app->pos.x - app->dir.x * MOVE_SPEED;
-		if (new_pos.x > 0 && new_pos.x < app->map->width && app->map->data[(int)app->pos.y][(int)new_pos.x] == 0)
-			app->pos.x -= app->dir.x * MOVE_SPEED;
-		new_pos.y = app->pos.y - app->dir.y * MOVE_SPEED;
-		if (new_pos.y > 0 && new_pos.y < app->map->height && app->map->data[(int)new_pos.y][(int)app->pos.x] == 0)
-			app->pos.y -= app->dir.y * MOVE_SPEED;
-	}
-	if (app->key_pressed[LEFT])
-	{
-		double oldDirX = app->dir.x;
-		app->dir.x = app->dir.x * cos(ROT_SPEED) -
-			app->dir.y * sin(ROT_SPEED);
-		app->dir.y = oldDirX * sin(ROT_SPEED) +
-			app->dir.y * cos(ROT_SPEED);
-		double oldPlaneX = app->plane.x;
-		app->plane.x = app->plane.x * cos(ROT_SPEED) -
-			app->plane.y * sin(ROT_SPEED);
-		app->plane.y = oldPlaneX * sin(ROT_SPEED) +
-			app->plane.y * cos(ROT_SPEED);
-	}
-	if (app->key_pressed[RIGHT])
-	{
-		double oldDirX = app->dir.x;
-		app->dir.x = app->dir.x * cos(-ROT_SPEED) -
-			app->dir.y * sin(-ROT_SPEED);
-		app->dir.y = oldDirX * sin(-ROT_SPEED) +
-			app->dir.y * cos(-ROT_SPEED);
-		double oldPlaneX = app->plane.x;
-		app->plane.x = app->plane.x * cos(-ROT_SPEED) -
-			app->plane.y * sin(-ROT_SPEED);
-		app->plane.y = oldPlaneX * sin(-ROT_SPEED) +
-			app->plane.y * cos(-ROT_SPEED);
-	}
+	move_character(app);
 	return (0);
 }
 
@@ -67,7 +22,6 @@ void clear_image(t_app *app)
 {
 	memset(app->image.data, 0, sizeof(int) * WIN_WIDTH * WIN_HEIGHT);
 }
-
 
 int main_draw_loop(t_app *app)
 {
@@ -97,6 +51,7 @@ int main_draw_loop(t_app *app)
 
 		int hit = 0;
 		int side;
+		int sideMod = 0;
 
 		if (rayDir.x < 0)
 		{
@@ -138,7 +93,6 @@ int main_draw_loop(t_app *app)
 			else if (app->map->data[map.y][map.x] > 0)
 				hit = 1;
 		}
-
 		if (side == 0)
 			perpWallDist = (map.x - rayPos.x + (1 - step.x) / 2) / rayDir.x;
 		else
@@ -158,7 +112,7 @@ int main_draw_loop(t_app *app)
 		if (map.y >= app->map->height || map.y < 0 || map.x >= app->map->width || map.x < 0)
 			texNum = 0;
 		else
-			texNum = app->map->data[map.y][map.x] - 1;
+			texNum = side + sideMod;
 
 		double wallX;
 		if (side == 0) wallX = rayPos.y + perpWallDist * rayDir.y;
@@ -193,9 +147,8 @@ int main_draw_loop(t_app *app)
 				texY = 0;
 			if (texX < 0 || texX > TEX_HEIGHT)
 				texX = 0;
-			int color = app->texture[texNum][TEX_WIDTH * texY + texX];
-			if (side == 1)
-				color = (color >> 1) & 0x7F7F7F;
+			int color;
+			color = app->texture[texNum][TEX_WIDTH * texY + texX];
 			*(app->image.data + (x + WIN_WIDTH * y)) =
 				(int)mlx_get_color_value(app->mlx, color);
 		}
@@ -206,7 +159,6 @@ int main_draw_loop(t_app *app)
 		}
 	}
 	mlx_put_image_to_window(app->mlx, app->win, app->image.ptr, 0, 0);
-	mlx_put_image_to_window(app->mlx, app->win, app->textures.ptr, 0, 0);
 	return (0);
 }
 
