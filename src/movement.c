@@ -6,7 +6,7 @@
 /*   By: ngrasset <ngrasset@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/10 17:18:23 by ngrasset          #+#    #+#             */
-/*   Updated: 2018/02/10 17:42:23 by ngrasset         ###   ########.fr       */
+/*   Updated: 2018/02/11 11:40:22 by ngrasset         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,31 +35,30 @@ static void		apply_rotation(t_app *app, t_v2 rot)
 	app->plane.y = old_plane.x * rot.y + app->plane.y * rot.x;
 }
 
-void			move_character(t_app *app)
+void			move_character(t_app *app, float dt)
 {
 	t_v2 movement;
 
 	if (app->key_pressed[UP])
 	{
-		movement.x = app->dir.x * MOVE_SPEED;
-		movement.y = app->dir.y * MOVE_SPEED;
+		movement.x = app->dir.x * MOVE_SPEED * dt;
+		movement.y = app->dir.y * MOVE_SPEED * dt;
 		apply_movement(app, movement);
 	}
 	if (app->key_pressed[DOWN])
 	{
-		movement.x = -app->dir.x * MOVE_SPEED;
-		movement.y = -app->dir.y * MOVE_SPEED;
+		movement.x = -app->dir.x * MOVE_SPEED * dt;
+		movement.y = -app->dir.y * MOVE_SPEED * dt;
 		apply_movement(app, movement);
 	}
 	if (app->key_pressed[LEFT])
 	{
-		movement = (t_v2) { cos(ROT_SPEED), sin(ROT_SPEED) };
+		movement = (t_v2) { cos(ROT_SPEED * dt), sin(ROT_SPEED * dt) };
 		apply_rotation(app, movement);
 	}
 	if (app->key_pressed[RIGHT])
 	{
-		movement.x = cos(-ROT_SPEED);
-		movement.y = sin(-ROT_SPEED);
+		movement = (t_v2) { cos(-ROT_SPEED * dt), sin(-ROT_SPEED * dt) };
 		apply_rotation(app, movement);
 	}
 }

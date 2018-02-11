@@ -6,15 +6,17 @@
 /*   By: ngrasset <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/11/18 20:20:11 by ngrasset          #+#    #+#             */
-/*   Updated: 2018/02/10 18:40:40 by ngrasset         ###   ########.fr       */
+/*   Updated: 2018/02/11 13:23:34 by ngrasset         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <wolf.h>
+# define VEC_SQRT(v) (sqrt(v.x * v.x + v.y * v.y))
+# define ANGLE(v1, v2) (( v1.x * v2.x + v1.y * v2.y ) / (VEC_SQRT(v1) * VEC_SQRT(v2)))
 
-int update(t_app *app)
+int update(t_app *app, float dt)
 {
-	move_character(app);
+	move_character(app, dt);
 	return (0);
 }
 
@@ -158,20 +160,34 @@ int main_draw_loop(t_app *app)
 				(int)mlx_get_color_value(app->mlx, 0x666666);
 		}
 	}
-	mlx_put_image_to_window(app->mlx, app->win, app->image.ptr, 0, 0);
 	return (0);
 }
 
 int		loop_hook(t_app *app)
 {
-	int		fps;
+	float	dt;
 	char	buffer[1024];
 
-	update(app);
+	dt = clock_tick(&(app->clock));
+	update(app, dt);
 	main_draw_loop(app);
-	fps = clock_tick(&(app->clock));
-	sprintf(buffer, "%d fps", fps);
+	
+	mlx_put_image_to_window(app->mlx, app->win, app->image.ptr, 0, 0);
+	sprintf(buffer, "%d fps", app->clock.last_tick_fps);
 	mlx_string_put(app->mlx, app->win, 12, 12, 0xFFFFFF, buffer);
+	sprintf(buffer, "dir: %f %f", app->dir.x, app->dir.y);
+	mlx_string_put(app->mlx, app->win, 12, 24, 0xFFFFFF, buffer);
+	sprintf(buffer, "pos: %f %f", app->pos.x, app->pos.y);
+	mlx_string_put(app->mlx, app->win, 12, 36, 0xFFFFFF, buffer);
+	sprintf(buffer, "plane: %f %f", app->plane.x, app->plane.y);
+	mlx_string_put(app->mlx, app->win, 12, 48, 0xFFFFFF, buffer);
+	sprintf(buffer, "length dir: %f", VEC_SQRT(app->dir));
+	mlx_string_put(app->mlx, app->win, 12, 60, 0xFFFFFF, buffer);
+	sprintf(buffer, "length plane: %f", VEC_SQRT(app->plane));
+	mlx_string_put(app->mlx, app->win, 12, 72, 0xFFFFFF, buffer);
+	sprintf(buffer, "fov: %f", acos(ANGLE(app->plane, app->dir)) * 180 / M_PI);
+	mlx_string_put(app->mlx, app->win, 12, 90, 0xFFFFFF, buffer);
+
 	return (0);
 }
 

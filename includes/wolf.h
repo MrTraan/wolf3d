@@ -6,7 +6,7 @@
 /*   By: ngrasset <ngrasset@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/10 16:54:51 by ngrasset          #+#    #+#             */
-/*   Updated: 2018/02/10 17:33:49 by ngrasset         ###   ########.fr       */
+/*   Updated: 2018/02/11 11:44:14 by ngrasset         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,8 +39,8 @@
 # define TEX_HEIGHT 64
 # define NUM_TEXTURES 8
 
-# define MOVE_SPEED 0.1f
-# define ROT_SPEED 0.05f
+# define MOVE_SPEED 0.005f
+# define ROT_SPEED 0.0025f
 
 # define MAP_COORDS(APP, X, Y) ((int)((APP)->map->data[(int)(Y)][(int)(X)]))
 
@@ -104,7 +104,7 @@ typedef struct		s_app
 int					main_draw_loop(t_app *app);
 
 int					clock_init(t_clock *clock);
-int					clock_tick(t_clock *clock);
+float				clock_tick(t_clock *clock);
 
 int					key_press_event(int keycode, t_app *app);
 int					key_release_event(int keycode, t_app *app);
@@ -122,5 +122,5 @@ int					load_textures(t_app *app);
 void				free_map_data(t_map *map);
 void				free_app(t_app *app);
 
-void				move_character(t_app *app);
+void				move_character(t_app *app, float dt);
 #endif
