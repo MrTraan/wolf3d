@@ -6,7 +6,7 @@
 /*   By: ngrasset <ngrasset@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/10 16:54:51 by ngrasset          #+#    #+#             */
-/*   Updated: 2018/02/11 15:18:24 by ngrasset         ###   ########.fr       */
+/*   Updated: 2018/02/11 16:15:10 by ngrasset         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,7 +46,7 @@
 # define GROUND_COLOR 0x0
 
 # define MAP_COORDS(APP, X, Y) ((int)((APP)->map->data[(int)(Y)][(int)(X)]))
-# define PIXEL_AT(APP, X, Y) (*(APP->image.data + (X + WIN_WIDTH * Y)))
+# define PIXEL_AT(APP, C) (*(APP->image.data + (C.x + WIN_WIDTH * C.y)))
 
 typedef struct		s_v2
 {
@@ -112,7 +112,21 @@ typedef struct		s_app
 	t_map			*map;
 }					t_app;
 
-int					main_draw_loop(t_app *app);
+typedef struct		s_ctx
+{
+	t_v2			camera;
+	t_v2			ray_pos;
+	t_v2			ray_dir;
+	t_v2			delta_dist;
+	t_v2			side_dist;
+	t_v2i			map;
+	t_v2i			step;
+	t_v2i			tex;
+	t_v2i			boundaries;
+	double			line_height;
+	double			wall_dist;
+	t_direction		direction;
+}					t_ctx;
 
 int					clock_init(t_clock *clock);
 float				clock_tick(t_clock *clock);
@@ -123,7 +137,8 @@ int					key_release_event(int keycode, t_app *app);
 t_map				*parse_map_file(char *path);
 
 int					loop_hook(t_app *app);
-int					main_draw_loop(t_app *app);
+void				main_draw_loop(t_app *app);
+int					loop_hook(t_app *app);
 
 int					first_empty_position(t_app *app);
 int					parse_arguments(int ac, char **av, t_app *app);
@@ -134,4 +149,5 @@ void				free_map_data(t_map *map);
 void				free_app(t_app *app);
 
 void				move_character(t_app *app, float dt);
+
 #endif

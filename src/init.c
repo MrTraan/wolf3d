@@ -6,7 +6,7 @@
 /*   By: ngrasset <ngrasset@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/10 15:47:27 by ngrasset          #+#    #+#             */
-/*   Updated: 2018/02/11 15:19:13 by ngrasset         ###   ########.fr       */
+/*   Updated: 2018/02/11 16:13:45 by ngrasset         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -124,7 +124,7 @@ int		init_app(t_app *app)
 		ft_putstr_fd("Couldn't create window\n", 2);
 		return (1);
 	}
-	mlx_expose_hook(app->win, main_draw_loop, app);
+	mlx_expose_hook(app->win, loop_hook, app);
 	app->image.ptr = mlx_new_image(app->mlx, WIN_WIDTH, WIN_HEIGHT);
 	app->image.data = (int *)mlx_get_data_addr(app->image.ptr, app->image.infos,
 			app->image.infos + 1, app->image.infos + 2);

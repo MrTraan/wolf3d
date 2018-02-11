@@ -6,21 +6,21 @@
 #    By: ngrasset <ngrasset@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2018/02/10 15:53:21 by ngrasset          #+#    #+#              #
-#    Updated: 2018/02/10 17:28:18 by ngrasset         ###   ########.fr        #
+#    Updated: 2018/02/11 16:05:59 by ngrasset         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 NAME = wolf3d
 
 C_DIR = src
-C_FILES = src/clock.c  src/keyboard.c src/main.c src/parse_map_file.c src/init.c src/free.c src/movement.c
+C_FILES = src/clock.c  src/keyboard.c src/main.c src/parse_map_file.c src/init.c src/free.c src/movement.c src/drawing.c
 
 
 O_DIR =	.tmp/obj
 O_DIRS = $(C_DIRS:$(C_DIR)%=$(O_DIR)%)
 O_FILES = $(C_FILES:$(C_DIR)%.c=$(O_DIR)%.o)
 
-FLAGS = -Wall -Wextra -Werror -fsanitize=address
+FLAGS = -Wall -Wextra -Werror -O3
 INCLUDES = -I ./includes -I ./libft/includes -I./minilibx_macos
 LIB = -L./minilibx_macos -L/usr/local/lib -lmlx -framework OpenGL -framework AppKit -L./libft -lft
 
