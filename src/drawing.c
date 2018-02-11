@@ -6,7 +6,7 @@
 /*   By: ngrasset <ngrasset@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/11 15:22:06 by ngrasset          #+#    #+#             */
-/*   Updated: 2018/02/11 16:11:42 by ngrasset         ###   ########.fr       */
+/*   Updated: 2018/02/11 16:41:47 by ngrasset         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -110,21 +110,6 @@ void			map_boundaries(t_ctx *ctx)
 	if ((ctx->direction == NORTH || ctx->direction == SOUTH)
 			&& ctx->ray_dir.y > 0)
 		ctx->tex.x = TEX_WIDTH - ctx->tex.x - 1;
-}
-
-void			plot_line(t_app *app, t_ctx *ctx, t_v2i cursor)
-{
-	int		d;
-	int		color;
-
-	d = cursor.y * 256 - WIN_HEIGHT * 128 + ctx->line_height * 128;
-	ctx->tex.y = ((d * TEX_HEIGHT) / ctx->line_height) / 256;
-	if (ctx->tex.y < 0 || ctx->tex.y > TEX_HEIGHT)
-		ctx->tex.y = 0;
-	if (ctx->tex.x < 0 || ctx->tex.x > TEX_HEIGHT)
-		ctx->tex.x = 0;
-	color = app->texture[ctx->direction][TEX_WIDTH * ctx->tex.y + ctx->tex.x];
-	PIXEL_AT(app, cursor) = (int)mlx_get_color_value(app->mlx, color);
 }
 
 void			main_draw_loop(t_app *app)

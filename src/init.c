@@ -6,7 +6,7 @@
 /*   By: ngrasset <ngrasset@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/10 15:47:27 by ngrasset          #+#    #+#             */
-/*   Updated: 2018/02/11 16:13:45 by ngrasset         ###   ########.fr       */
+/*   Updated: 2018/02/11 16:47:29 by ngrasset         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,6 @@ int		first_empty_position(t_app *app)
 		}
 		y++;
 	}
-	ft_putstr_fd("Could not find an empty starting position\n", 2);
 	return (1);
 }
 

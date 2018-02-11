@@ -6,7 +6,7 @@
 /*   By: ngrasset <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/11/19 12:55:45 by ngrasset          #+#    #+#             */
-/*   Updated: 2018/02/10 16:20:59 by ngrasset         ###   ########.fr       */
+/*   Updated: 2018/02/11 16:42:05 by ngrasset         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,4 +42,3 @@ int			key_release_event(int keycode, t_app *app)
 		app->key_pressed[RIGHT] = 0;
 	return (0);
 }
-

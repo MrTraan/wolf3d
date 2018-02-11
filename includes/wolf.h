@@ -6,7 +6,7 @@
 /*   By: ngrasset <ngrasset@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/10 16:54:51 by ngrasset          #+#    #+#             */
-/*   Updated: 2018/02/11 16:15:10 by ngrasset         ###   ########.fr       */
+/*   Updated: 2018/02/11 16:41:09 by ngrasset         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -149,5 +149,7 @@ void				free_map_data(t_map *map);
 void				free_app(t_app *app);
 
 void				move_character(t_app *app, float dt);
+
+void				plot_line(t_app *app, t_ctx *ctx, t_v2i cursor);
 
 #endif

@@ -6,7 +6,7 @@
 /*   By: ngrasset <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/11/25 17:23:34 by ngrasset          #+#    #+#             */
-/*   Updated: 2015/11/25 17:38:27 by ngrasset         ###   ########.fr       */
+/*   Updated: 2018/02/11 16:51:24 by ngrasset         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,10 @@ t_list	*ft_lstnew(void const *content, size_t content_size)
 	{
 		new_kid->content = (void *)malloc(content_size);
 		if (!new_kid->content)
+		{
+			free(new_kid);
 			return (NULL);
+		}
 		ft_memcpy(new_kid->content, content, content_size);
 		new_kid->content_size = content_size;
 	}

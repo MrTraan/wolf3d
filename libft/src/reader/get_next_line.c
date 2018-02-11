@@ -6,7 +6,7 @@
 /*   By: ngrasset <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/12/04 17:57:09 by ngrasset          #+#    #+#             */
-/*   Updated: 2016/08/16 14:33:32 by ngrasset         ###   ########.fr       */
+/*   Updated: 2018/02/11 16:51:59 by ngrasset         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,6 @@ char	*mem_concat(char *dst, char *src)
 	res = ft_strcpy(res, dst);
 	res = ft_strcat(res, src);
 	free(dst);
-	dst = res;
 	return (res);
 }
 

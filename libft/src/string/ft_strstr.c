@@ -6,7 +6,7 @@
 /*   By: ngrasset <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/11/24 18:22:09 by ngrasset          #+#    #+#             */
-/*   Updated: 2015/11/24 18:29:02 by ngrasset         ###   ########.fr       */
+/*   Updated: 2018/02/11 16:53:17 by ngrasset         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,6 @@ char	*ft_strstr(const char *s1, const char *s2)
 	while (*s1)
 	{
 		i = 0;
-		matching = 0;
 		if (*s1 == *s2)
 		{
 			matching = 1;

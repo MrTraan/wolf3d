@@ -6,7 +6,7 @@
 /*   By: ngrasset <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/11/19 12:00:06 by ngrasset          #+#    #+#             */
-/*   Updated: 2018/02/11 14:21:42 by ngrasset         ###   ########.fr       */
+/*   Updated: 2018/02/11 16:41:37 by ngrasset         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 int		clock_init(t_clock *clock)
 {
-	return(gettimeofday(&(clock->time), NULL));
+	return (gettimeofday(&(clock->time), NULL));
 }
 
 float	clock_tick(t_clock *clock)

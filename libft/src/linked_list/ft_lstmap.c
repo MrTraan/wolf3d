@@ -6,7 +6,7 @@
 /*   By: ngrasset <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/11/25 17:55:48 by ngrasset          #+#    #+#             */
-/*   Updated: 2015/11/25 18:02:18 by ngrasset         ###   ########.fr       */
+/*   Updated: 2018/02/11 16:50:46 by ngrasset         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,7 @@ t_list	*ft_lstmap(t_list *lst, t_list *(*f)(t_list *elem))
 		to_copy = (*f)(lst);
 		current->next = ft_lstnew(to_copy->content, to_copy->content_size);
 		if (!current->next)
-			return (NULL);
+			continue ;
 		current = current->next;
 		lst = lst->next;
 	}
