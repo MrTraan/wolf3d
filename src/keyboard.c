@@ -6,11 +6,18 @@
 /*   By: ngrasset <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/11/19 12:55:45 by ngrasset          #+#    #+#             */
-/*   Updated: 2018/02/11 16:42:05 by ngrasset         ###   ########.fr       */
+/*   Updated: 2018/02/11 17:13:14 by ngrasset         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <wolf.h>
+
+int			window_closed(t_app *app)
+{
+	free_app(app);
+	exit(0);
+	return (0);
+}
 
 int			key_press_event(int keycode, t_app *app)
 {

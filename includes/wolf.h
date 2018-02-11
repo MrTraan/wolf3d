@@ -6,7 +6,7 @@
 /*   By: ngrasset <ngrasset@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/10 16:54:51 by ngrasset          #+#    #+#             */
-/*   Updated: 2018/02/11 16:41:09 by ngrasset         ###   ########.fr       */
+/*   Updated: 2018/02/11 17:11:42 by ngrasset         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,8 +30,10 @@
 
 # define KEY_PRESS 2
 # define KEY_RELEASE 3
+# define DESTROY_NOTIFY 17
 # define KEY_PRESS_MASK (1L<<0)
 # define KEY_RELEASE_MASK (1L<<1)
+# define STRUCT_NOTIFY_MASK	(1L<<17)
 
 # define WIN_WIDTH 1200
 # define WIN_HEIGHT 720
@@ -133,6 +135,7 @@ float				clock_tick(t_clock *clock);
 
 int					key_press_event(int keycode, t_app *app);
 int					key_release_event(int keycode, t_app *app);
+int					window_closed(t_app *app);
 
 t_map				*parse_map_file(char *path);
 

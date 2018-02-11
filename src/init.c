@@ -6,7 +6,7 @@
 /*   By: ngrasset <ngrasset@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/10 15:47:27 by ngrasset          #+#    #+#             */
-/*   Updated: 2018/02/11 17:03:03 by ngrasset         ###   ########.fr       */
+/*   Updated: 2018/02/11 17:11:48 by ngrasset         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -129,5 +129,6 @@ int		init_app(t_app *app)
 	mlx_loop_hook(app->mlx, loop_hook, app);
 	mlx_hook(app->win, KEY_PRESS, KEY_PRESS_MASK, key_press_event, app);
 	mlx_hook(app->win, KEY_RELEASE, KEY_RELEASE_MASK, key_release_event, app);
+	mlx_hook(app->win, DESTROY_NOTIFY, STRUCT_NOTIFY_MASK, window_closed, app);
 	return (0);
 }
