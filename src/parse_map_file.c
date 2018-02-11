@@ -6,7 +6,7 @@
 /*   By: ngrasset <ngrasset@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/12/17 17:24:34 by ngrasset          #+#    #+#             */
-/*   Updated: 2018/02/10 16:52:27 by ngrasset         ###   ########.fr       */
+/*   Updated: 2018/02/11 15:07:42 by ngrasset         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,8 +49,11 @@ static int		parse_line(t_map *map, char *line, int i)
 	extract[1] = '\0';
 	while (j < map->width)
 	{
-		if (*line < '0' || *line > NUM_TEXTURES + '0')
+		if (*line != '0' && *line != '1')
+		{
+			printf("error: %c\n", *line);
 			return (1);
+		}
 		extract[0] = *line;
 		map->data[i][j] = ft_atoi(extract);
 		line++;

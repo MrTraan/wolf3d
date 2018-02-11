@@ -6,7 +6,7 @@
 /*   By: ngrasset <ngrasset@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/10 15:47:27 by ngrasset          #+#    #+#             */
-/*   Updated: 2018/02/11 13:22:47 by ngrasset         ###   ########.fr       */
+/*   Updated: 2018/02/11 15:19:13 by ngrasset         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,6 @@ int		first_empty_position(t_app *app)
 		{
 			if (app->map->data[y][x] == 0)
 			{
-				printf("lets start at %d %d\n", x, y);
 				app->pos = (t_v2){x + 0.1, y + 0.1};
 				return (0);
 			}
@@ -97,6 +96,7 @@ int		load_textures(t_app *app)
 	}
 	if (width != TEX_WIDTH * NUM_TEXTURES || height != TEX_HEIGHT)
 	{
+		printf("%d %d\n", width, height);
 		ft_putstr_fd("Invalid texture file format\n", 2);
 		return (1);
 	}

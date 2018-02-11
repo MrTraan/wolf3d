@@ -6,7 +6,7 @@
 /*   By: ngrasset <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/11/18 20:20:11 by ngrasset          #+#    #+#             */
-/*   Updated: 2018/02/11 13:23:34 by ngrasset         ###   ########.fr       */
+/*   Updated: 2018/02/11 15:12:56 by ngrasset         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,9 +42,13 @@ int main_draw_loop(t_app *app)
 
 		t_v2 sideDist;
 
+		/* t_v2 deltaDist = { */
+		/* 	.x = sqrt(1 + (rayDir.y * rayDir.y) / (rayDir.x * rayDir.x)), */
+		/* 	.y = sqrt(1 + (rayDir.x * rayDir.x) / (rayDir.y * rayDir.y)) */
+		/* }; */
 		t_v2 deltaDist = {
-			.x = sqrt(1 + (rayDir.y * rayDir.y) / (rayDir.x * rayDir.x)),
-			.y = sqrt(1 + (rayDir.x * rayDir.x) / (rayDir.y * rayDir.y))
+			.x = fabs(1 / rayDir.x),
+			.y = fabs(1 / rayDir.y)
 		};
 
 		double perpWallDist;
@@ -52,8 +56,7 @@ int main_draw_loop(t_app *app)
 		t_v2i step;
 
 		int hit = 0;
-		int side;
-		int sideMod = 0;
+		t_direction direction;
 
 		if (rayDir.x < 0)
 		{
@@ -82,20 +85,20 @@ int main_draw_loop(t_app *app)
 			{
 				sideDist.x += deltaDist.x;
 				map.x += step.x;
-				side = 0;
+				direction = step.x == -1 ? EAST : WEST;
 			}
 			else
 			{
 				sideDist.y += deltaDist.y;
 				map.y += step.y;
-				side = 1;
+				direction = step.y == -1 ? NORTH : SOUTH;
 			}
 			if (map.y >= app->map->height || map.y < 0 || map.x >= app->map->width || map.x < 0)
 				hit = 1;
 			else if (app->map->data[map.y][map.x] > 0)
 				hit = 1;
 		}
-		if (side == 0)
+		if (direction == WEST || direction == EAST)
 			perpWallDist = (map.x - rayPos.x + (1 - step.x) / 2) / rayDir.x;
 		else
 			perpWallDist = (map.y - rayPos.y + (1 - step.y) / 2) / rayDir.y;
@@ -109,22 +112,19 @@ int main_draw_loop(t_app *app)
 		if (drawEnd >= WIN_HEIGHT)
 			drawEnd = WIN_HEIGHT - 1;
 
-		int texNum;
-		
-		if (map.y >= app->map->height || map.y < 0 || map.x >= app->map->width || map.x < 0)
-			texNum = 0;
-		else
-			texNum = side + sideMod;
+		int texNum = direction;
 
 		double wallX;
-		if (side == 0) wallX = rayPos.y + perpWallDist * rayDir.y;
-		else wallX = rayPos.x + perpWallDist * rayDir.x;
+		if (direction == WEST || direction == EAST)
+			wallX = rayPos.y + perpWallDist * rayDir.y;
+		else
+			wallX = rayPos.x + perpWallDist * rayDir.x;
 		wallX -= floor(wallX);
 
 		int texX = (int)(wallX * (double)TEX_WIDTH);
-		if (side == 0 && rayDir.x > 0)
+		if ((direction == WEST || direction == EAST) && rayDir.x > 0)
 			texX = TEX_WIDTH - texX - 1;
-		if (side == 1 && rayDir.y < 0)
+		if ((direction == NORTH || direction == SOUTH) && rayDir.y > 0)
 			texX = TEX_WIDTH - texX - 1;
 
 		int start = drawStart;
@@ -138,8 +138,7 @@ int main_draw_loop(t_app *app)
 		}
 		for (int y = 0; y < start; y++)
 		{
-			*(app->image.data + (x + WIN_WIDTH * y)) =
-				(int)mlx_get_color_value(app->mlx, 0x0);
+			PIXEL_AT(app, x, y) = (int)mlx_get_color_value(app->mlx, GROUND_COLOR);
 		}
 		for (int y = start; y < end; y++)
 		{
@@ -151,13 +150,11 @@ int main_draw_loop(t_app *app)
 				texX = 0;
 			int color;
 			color = app->texture[texNum][TEX_WIDTH * texY + texX];
-			*(app->image.data + (x + WIN_WIDTH * y)) =
-				(int)mlx_get_color_value(app->mlx, color);
+			PIXEL_AT(app, x, y) = (int)mlx_get_color_value(app->mlx, color);
 		}
 		for (int y = end; y < WIN_HEIGHT - 1; y++)
 		{
-			*(app->image.data + (x + WIN_WIDTH * y)) =
-				(int)mlx_get_color_value(app->mlx, 0x666666);
+			PIXEL_AT(app, x, y) = (int)mlx_get_color_value(app->mlx, ROOF_COLOR);
 		}
 	}
 	return (0);

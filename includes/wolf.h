@@ -6,7 +6,7 @@
 /*   By: ngrasset <ngrasset@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/10 16:54:51 by ngrasset          #+#    #+#             */
-/*   Updated: 2018/02/11 11:44:14 by ngrasset         ###   ########.fr       */
+/*   Updated: 2018/02/11 15:18:24 by ngrasset         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@
 # define KEY_RIGHT 124
 # define KEY_LEFT 123
 # define KEY_ESCAPE 53
-# define TEX_FILE_PATH "./textures/minecraft.xpm"
+# define TEX_FILE_PATH "./textures.xpm"
 
 # define KEY_PRESS 2
 # define KEY_RELEASE 3
@@ -37,13 +37,16 @@
 # define WIN_HEIGHT 720
 # define TEX_WIDTH 64
 # define TEX_HEIGHT 64
-# define NUM_TEXTURES 8
+# define NUM_TEXTURES 4
 
 # define MOVE_SPEED 0.005f
 # define ROT_SPEED 0.0025f
 
-# define MAP_COORDS(APP, X, Y) ((int)((APP)->map->data[(int)(Y)][(int)(X)]))
+# define ROOF_COLOR 0x666666
+# define GROUND_COLOR 0x0
 
+# define MAP_COORDS(APP, X, Y) ((int)((APP)->map->data[(int)(Y)][(int)(X)]))
+# define PIXEL_AT(APP, X, Y) (*(APP->image.data + (X + WIN_WIDTH * Y)))
 
 typedef struct		s_v2
 {
@@ -78,6 +81,14 @@ typedef enum		e_keys
 	LEFT,
 	RIGHT
 }					t_keys;
+
+typedef enum		e_direction
+{
+	SOUTH,
+	WEST,
+	NORTH,
+	EAST
+}					t_direction;
 
 typedef struct		s_map
 {
