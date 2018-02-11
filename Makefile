@@ -6,7 +6,7 @@
 #    By: ngrasset <ngrasset@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2018/02/10 15:53:21 by ngrasset          #+#    #+#              #
-#    Updated: 2018/02/11 16:54:06 by ngrasset         ###   ########.fr        #
+#    Updated: 2018/02/11 16:55:20 by ngrasset         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -42,7 +42,7 @@ clean:
 
 fclean: clean
 	make fclean -C ./libft
-	@rm $(NAME) || true
+	@rm -f $(NAME)
 	@rm -Rf .tmp/
 
 re: fclean all

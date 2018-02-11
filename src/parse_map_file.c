@@ -6,7 +6,7 @@
 /*   By: ngrasset <ngrasset@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/12/17 17:24:34 by ngrasset          #+#    #+#             */
-/*   Updated: 2018/02/11 15:07:42 by ngrasset         ###   ########.fr       */
+/*   Updated: 2018/02/11 17:01:44 by ngrasset         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,10 +50,7 @@ static int		parse_line(t_map *map, char *line, int i)
 	while (j < map->width)
 	{
 		if (*line != '0' && *line != '1')
-		{
-			printf("error: %c\n", *line);
 			return (1);
-		}
 		extract[0] = *line;
 		map->data[i][j] = ft_atoi(extract);
 		line++;
@@ -73,6 +70,8 @@ t_map			*read_map_data(t_map *map, int fd)
 	int		ret;
 	int		i;
 
+	if (map->height > 128 || map->width > 128)
+		return (log_error("File is too big to be supported", fd, map));
 	i = 0;
 	while (i < map->height)
 	{

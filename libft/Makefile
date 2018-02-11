@@ -6,7 +6,7 @@
 #    By: ngrasset <marvin@42.fr>                    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2015/11/27 13:41:14 by ngrasset          #+#    #+#              #
-#    Updated: 2016/08/16 14:30:20 by ngrasset         ###   ########.fr        #
+#    Updated: 2018/02/11 16:55:33 by ngrasset         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -37,7 +37,7 @@ clean:
 	rm -Rf $(O_DIR)
 
 fclean: clean
-	@rm $(NAME) || true
+	@rm -f $(NAME)
 	@rm -Rf .tmp/
 
 re: fclean all

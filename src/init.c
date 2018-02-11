@@ -6,7 +6,7 @@
 /*   By: ngrasset <ngrasset@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/10 15:47:27 by ngrasset          #+#    #+#             */
-/*   Updated: 2018/02/11 16:47:29 by ngrasset         ###   ########.fr       */
+/*   Updated: 2018/02/11 17:03:03 by ngrasset         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -95,7 +95,6 @@ int		load_textures(t_app *app)
 	}
 	if (width != TEX_WIDTH * NUM_TEXTURES || height != TEX_HEIGHT)
 	{
-		printf("%d %d\n", width, height);
 		ft_putstr_fd("Invalid texture file format\n", 2);
 		return (1);
 	}
